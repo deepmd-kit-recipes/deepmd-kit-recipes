@@ -1,4 +1,4 @@
-# DeePMD-kit
+# DeePMD-kit conda recipes
 
 ## Install packages
 
