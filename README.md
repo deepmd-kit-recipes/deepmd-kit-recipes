@@ -9,7 +9,7 @@ conda create -n deepmd deepmd-kit-devel-gpu -c njzjz
 
 If you want to specify the version of CUDA or TensorFlow, execute the following command instead:
 ```sh
-conda create -n deepmd deepmd-kit-devel-gpu cudatoolkit=10.1 tensorflow-gpu=1.14
+conda create -n deepmd deepmd-kit-devel-gpu cudatoolkit=10.1 tensorflow-gpu=1.14 -c njzjz
 ```
 
 To use the environment, type:
