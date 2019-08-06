@@ -16,16 +16,6 @@ To use the environment, type:
 
 ```sh
 source activate deepmd
-```
-
-Before using DeePMD-kit, set the following environment variable for [the best performance](https://www.tensorflow.org/guide/performance/overview):
-```sh
-export KMP_BLOCKTIME=0
-export KMP_AFFINITY=granularity=fine,verbose,compact,1,0
-```
-
-Then
-```sh
 python -m deepmd train some.json
 ```
 
