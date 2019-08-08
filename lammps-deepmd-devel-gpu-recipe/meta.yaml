@@ -1,0 +1,68 @@
+{% set build = 0 %}
+{% set name = "lammps-deepmd-devel-gpu" %}
+{% set version = "stable_5Jun2019" %}
+{% set pkg_version = "2019.6.5" %}
+{% set sha256 = "999c54ec4bbbe27a81448644ff02b0ed4220747fee7ada06e6fd682478613e2d" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ pkg_version }}
+
+source:
+  url: https://github.com/lammps/lammps/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+  patches: 
+    - deepmd.patch
+    
+build:
+  number: {{ build }}
+  skip: True  # [win]
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake
+    - make 
+  
+  host:
+    - deepmd-kit-cc-devel-gpu
+    - tensorflow-cc-gpu
+    - mpich
+    - zlib
+    - fftw
+    - libpng
+    - jpeg
+
+  run:
+    - {{ pin_compatible('mpich') }}
+    - fftw
+    - deepmd-kit-cc-devel-gpu
+    - tensorflow-cc-gpu
+    - libpng
+    - jpeg
+    - libstdcxx-ng
+
+test:
+  commands: 
+    - lmp -help
+
+about:
+  home: http://lammps.sandia.gov
+  license: GPL-2.0
+  license_family: GPL
+  license_file: LICENSE
+  summary: 'LAMMPS stands for Large-scale Atomic/Molecular Massively Parallel Simulator.'
+
+  description: |
+    LAMMPS is a classical molecular dynamics simulation code designed to
+    run efficiently on parallel computers.  It was developed at Sandia
+    National Laboratories, a US Department of Energy facility, with
+    funding from the DOE.  It is an open-source code, distributed freely
+    under the terms of the GNU Public License (GPL).
+  doc_url: http://lammps.sandia.gov/doc/Manual.html
+  dev_url: https://github.com/lammps/lammps
+
+extra:
+  recipe-maintainers:
+    - njzjz

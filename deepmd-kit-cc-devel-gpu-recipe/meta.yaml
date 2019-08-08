@@ -1,0 +1,41 @@
+{% set name = "deepmd-kit-cc-devel-gpu" %}
+
+
+package:
+  name: {{ name|lower }}
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  git_url: https://github.com/deepmodeling/deepmd-kit
+  git_rev: devel
+  patches:
+  - 60.diff
+
+build:
+  number: {{ GIT_DESCRIBE_NUMBER }}
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake
+
+  host:
+    - tensorflow-cc-gpu {{ tensorflow }}
+
+  run:
+    - {{ pin_compatible('tensorflow-cc-gpu', max_pin='x.x') }}
+    - libgcc
+
+about:
+  home: https://github.com/deepmodeling/deepmd-kit
+  license: LGPL-3.0
+  license_family: LGPL
+  license_file: LICENSE
+  summary: 'A deep learning package for many-body potential energy representation and molecular dynamics'
+  doc_url: https://github.com/deepmodeling/deepmd-kit
+  dev_url: https://github.com/deepmodeling/deepmd-kit
+
+extra:
+  recipe-maintainers:
+    - njzjz
