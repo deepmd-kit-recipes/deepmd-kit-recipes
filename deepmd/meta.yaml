@@ -1,0 +1,72 @@
+{% set name = "deepmd-kit-devel-gpu" %}
+{% set version = "1.0.1" %}
+
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/deepmodeling/deepmd-kit
+  git_rev: v{{ version }}
+
+build:
+  number: 0
+
+outputs:
+  - name: deepmd-kit
+    script: "{{ PYTHON }} -m pip install . --no-deps -vv"
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - cmake  >=3.7
+        - make  # [unix]
+        - ninja
+
+      host:
+        - python >=3.6
+        - pip
+        - numpy >=1.13.3,<2.0a0
+        - setuptools_scm
+        - tensorflow
+        - setuptools_scm
+        - scikit-build
+        - m2r
+
+      run:
+        - python >=3.6
+        - numpy
+        - scipy
+        - tensorflow
+
+    test:
+      imports:
+        - deepmd
+      commands:
+        - dp -h
+
+  - name: libdeepmd
+    script: build.sh  # [unix]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - cmake
+      host:
+        - libtensorflow_cc
+      run:
+        - libtensorflow_cc
+
+about:
+  home: https://github.com/deepmodeling/deepmd-kit
+  license: LGPL-3.0
+  license_family: LGPL
+  license_file: LICENSE
+  summary: 'A deep learning package for many-body potential energy representation and molecular dynamics'
+  doc_url: https://github.com/deepmodeling/deepmd-kit
+  dev_url: https://github.com/deepmodeling/deepmd-kit
+
+extra:
+  recipe-maintainers:
+    - njzjz

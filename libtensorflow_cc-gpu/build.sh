@@ -84,52 +84,19 @@ bazel ${BAZEL_OPTS} build \
     --color=yes \
     --curses=no \
 	//tensorflow:libtensorflow_cc.so
-# dependencies
-export TMP_DIR=${SRC_DIR}/tmp
-mkdir -p ${TMP_DIR}
-# proto
-mkdir ${TMP_DIR}/proto
-cd tensorflow/contrib/makefile/downloads/protobuf/
-./autogen.sh
-./configure --prefix=${TMP_DIR}/proto/
-make -j${CPU_COUNT}
-make install
-# eigen
-mkdir ${TMP_DIR}/eigen
-cd ../eigen
-mkdir build_dir
-cd build_dir
-cmake -DCMAKE_INSTALL_PREFIX=${TMP_DIR}/eigen/ ../
-make install
-# nsync
-export LDFLAGS="-pthread -lrt"
-mkdir ${TMP_DIR}/nsync
-cd ../../nsync
-mkdir build_dir
-cd build_dir
-cmake -DCMAKE_INSTALL_PREFIX=${TMP_DIR}/nsync/ ../
-make -j${CPU_COUNT}
-make install
-unset LDFLAGS
-# absl
-cd ../../absl
-bazel build
-rsync -avzh --include '*/' --include '*.h' --exclude '*' absl ${PREFIX}/include/
-cd ../../../../..
-# copy libraries
-cp bazel-bin/tensorflow/libtensorflow_cc.so.1 ${PREFIX}/lib/
-cp bazel-bin/tensorflow/libtensorflow_framework.so.1 ${PREFIX}/lib/
-cp ${TMP_DIR}/proto/lib/libprotobuf.a ${PREFIX}/lib/
-cp ${TMP_DIR}/nsync/lib64/libnsync.a ${PREFIX}/lib/
-# copy includes
-mkdir -p ${PREFIX}/include/tensorflow
-cp -r bazel-genfiles/* ${PREFIX}/include/
-cp -r tensorflow/cc ${PREFIX}/include/tensorflow
-cp -r tensorflow/core ${PREFIX}/include/tensorflow
-cp -r third_party ${PREFIX}/include
-cp -r ${TMP_DIR}/proto/include/* ${PREFIX}/include
-cp -r ${TMP_DIR}/eigen/include/eigen3/* ${PREFIX}/include
-cp -r ${TMP_DIR}/nsync/include/*h ${PREFIX}/include
-# remove
-cd ${PREFIX}/include
-find . -name "*.cc" -type f -delete
+mkdir -p $PREFIX/lib
+cp -d bazel-bin/tensorflow/libtensorflow_cc.so* $PREFIX/lib/
+cp -d bazel-bin/tensorflow/libtensorflow_framework.so* $PREFIX/lib/
+cp -d $PREFIX/lib/libtensorflow_framework.so.1 $PREFIX/lib/libtensorflow_framework.so
+mkdir -p $PREFIX/include
+mkdir -p $PREFIX/include/tensorflow
+# copy headers
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-genfiles/ $tensorflow_root/include/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' tensorflow/cc $tensorflow_root/include/tensorflow/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' tensorflow/core $tensorflow_root/include/tensorflow/
+rsync -avzh --include '*/' --include '*.h' --exclude '*' third_party $tensorflow_root/include/
+rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-tensorflow/external/eigen_archive/Eigen $tensorflow_root/include/
+rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-tensorflow/external/eigen_archive/unsupported $tensorflow_root/include/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-tensorflow/external/protobuf_archive/src/ $tensorflow_root/include/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-tensorflow/external/com_google_absl/absl/ $tensorflow_root/include/absl/
+find $PREFIX/include -name "*.cc" -type f -delete

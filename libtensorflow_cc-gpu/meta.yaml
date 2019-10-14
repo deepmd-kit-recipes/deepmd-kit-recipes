@@ -2,7 +2,7 @@
 
 # This is the recipe for the "gpu" variant of tensorflow-base
 package:
-  name: tensorflow-cc-gpu
+  name: libtensorflow_cc
   version: {{ version }}
 
 source:
@@ -15,6 +15,7 @@ source:
 
 build:
   number: 0
+  string: gpu_h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
   skip: True  # [not x86_64]
   skip: True  # [win and vc<14]
 
@@ -28,7 +29,6 @@ requirements:
     - git
   host:
     - bazel >=0.24.1,<0.25.2 # [win]
-    #- zlib
     - cudatoolkit {{ cudatoolkit }}*
     - cudnn {{ cudnn }}*
     - cupti  # [not win]
@@ -36,6 +36,15 @@ requirements:
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
     - {{ pin_compatible('cudnn') }}
     - cupti  # [not win]
+
+test:
+  files:
+    - test_cc.cc
+  requires:
+    - {{ compiler('cxx') }}
+  commands:
+    - test -f $PREFIX/lib/libtensorflow_cc.so  # [not win]
+    - $CXX -std=c++11 -o test_cc -L${PREFIX}/lib/ -ltensorflow_cc -ltensorflow_framework -lrt -I${PREFIX}/include/ test_cc.cc && ./test_cc  # [not win]
 
 about:
   home: http://tensorflow.org/
