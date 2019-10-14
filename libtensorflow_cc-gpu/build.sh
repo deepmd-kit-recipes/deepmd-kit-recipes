@@ -99,4 +99,3 @@ rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-tensorflow/exte
 rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-tensorflow/external/eigen_archive/unsupported $tensorflow_root/include/
 rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-tensorflow/external/protobuf_archive/src/ $tensorflow_root/include/
 rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-tensorflow/external/com_google_absl/absl/ $tensorflow_root/include/absl/
-find $PREFIX/include -name "*.cc" -type f -delete
