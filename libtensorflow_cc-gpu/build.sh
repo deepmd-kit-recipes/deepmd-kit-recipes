@@ -53,11 +53,9 @@ export TF_NCCL_VERSION=""
 export GCC_HOST_COMPILER_PATH="${CC}"
 # Use system paths here rather than $PREFIX to allow Bazel to find the correct
 # libraries.  RPATH is adjusted post build to link to the DSOs in $PREFIX
-export TF_CUDA_PATHS="${PREFIX},/usr/local/cuda,/usr"
+export TF_CUDA_PATHS="${PREFIX},/scratch/jz748/cuda-10.0"
 
 ./configure
-
-tensorflow/contrib/makefile/download_dependencies.sh
 
 # build using bazel
 # for debugging the following lines may be helpful
@@ -66,7 +64,6 @@ tensorflow/contrib/makefile/download_dependencies.sh
 # jobs can be used to limit parallel builds and reduce resource needs
 #    --jobs=20             \
 bazel ${BAZEL_OPTS} build \
-    --jobs=20             \
     --copt=-march=nocona \
     --copt=-mtune=haswell \
     --copt=-ftree-vectorize \
@@ -91,11 +88,11 @@ cp -d $PREFIX/lib/libtensorflow_framework.so.1 $PREFIX/lib/libtensorflow_framewo
 mkdir -p $PREFIX/include
 mkdir -p $PREFIX/include/tensorflow
 # copy headers
-rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-genfiles/ $tensorflow_root/include/
-rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' tensorflow/cc $tensorflow_root/include/tensorflow/
-rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' tensorflow/core $tensorflow_root/include/tensorflow/
-rsync -avzh --include '*/' --include '*.h' --exclude '*' third_party $tensorflow_root/include/
-rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-tensorflow/external/eigen_archive/Eigen $tensorflow_root/include/
-rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-tensorflow/external/eigen_archive/unsupported $tensorflow_root/include/
-rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-tensorflow/external/protobuf_archive/src/ $tensorflow_root/include/
-rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-tensorflow/external/com_google_absl/absl/ $tensorflow_root/include/absl/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-genfiles/ $PREFIX/include/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' tensorflow/cc $PREFIX/include/tensorflow/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' tensorflow/core $PREFIX/include/tensorflow/
+rsync -avzh --include '*/' --include '*' --exclude '*.cc' third_party/ $PREFIX/include/third_party/
+rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-work/external/eigen_archive/Eigen/ $PREFIX/include/Eigen/
+rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-work/external/eigen_archive/unsupported/ $PREFIX/include/unsupported/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-work/external/protobuf_archive/src/google/ $PREFIX/include/google/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-work/external/com_google_absl/absl/ $PREFIX/include/absl/

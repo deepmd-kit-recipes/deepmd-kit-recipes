@@ -11,7 +11,8 @@ source:
   sha256: aa2a6a1daafa3af66807cfe0bc77bfe1144a9a53df9a96bab52e3e575b3047ed
   patches:
     - 0008-do-not-include-B-usr-bin-flag.patch  # [linux]
-    - 0009-patch-nccl-for-older-kernels.patch   # [linux]
+    - 0009-patch-nccl-for-older-kernels.patch  # [linux]
+    - 33106.diff
 
 build:
   number: 0
@@ -23,12 +24,9 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - bazel >=0.24.1,<0.25.2
-    - cmake
-    - make
+    - bazel
     - git
   host:
-    - bazel >=0.24.1,<0.25.2 # [win]
     - cudatoolkit {{ cudatoolkit }}*
     - cudnn {{ cudnn }}*
     - cupti  # [not win]

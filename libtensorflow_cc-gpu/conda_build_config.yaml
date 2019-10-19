@@ -9,6 +9,6 @@ c_compiler_version:
 cxx_compiler_version:
 - 5.4
 cudatoolkit:
-- 10.1
+- 10.0
 cudnn:
 - 7.6
