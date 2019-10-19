@@ -1,8 +1,10 @@
 {% set name = "lammps-dp" %}
+{% set version = "1.0.1" %}
+{% set lammps = "stable_7Aug2019" %}
 
 package:
   name: {{ name|lower }}
-  version: {{ libdeepmd }}
+  version: {{ version }}
 
 source:
   url: https://github.com/lammps/lammps/archive/{{ lammps }}.tar.gz
@@ -21,7 +23,7 @@ requirements:
     - make 
   
   host:
-    - libdeepmd
+    - libdeepmd =={{ gpu_dp }}  # [dp_variant == 'gpu']
     - mpich
     - zlib
     - fftw
@@ -31,13 +33,17 @@ requirements:
   run:
     - {{ pin_compatible('mpich') }}
     - fftw
-    - {{ pin_conpatible('libdeepmd') }}
     - libpng
     - jpeg
 
 test:
+  files:
+    - input.lammps
+    - water.lmp
+    - frozen_model.pb
   commands: 
     - lmp -help
+    - lmp -in input.lammps
 
 about:
   home: http://lammps.sandia.gov
