@@ -6,7 +6,7 @@
 conda install deepmd-kit=*=*gpu lammps-dp=*=*gpu -c deepmodeling
 ```
 
-Feels free if you replace `gpu` with `cpu`.
+Feels free to replace `gpu` with `cpu`.
 
 ```sh
 dp -h
