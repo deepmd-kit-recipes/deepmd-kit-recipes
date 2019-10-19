@@ -1,0 +1,8 @@
+dp_variant:
+- gpu
+cudatoolkit:
+- 10.0
+cudnn:
+- 7.6
+gpu_tf:
+- "1.14.0 gpu_he292aa2_0"
