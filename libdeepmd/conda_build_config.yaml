@@ -1,0 +1,13 @@
+dp_variant:
+- cpu
+- gpu
+tf:
+- "1.14.0 cpu"
+- "1.14.0 gpu"
+cudatoolkit:
+- 10.0
+cudnn:
+- 7.6
+zip_keys:
+- dp_variant
+- tf

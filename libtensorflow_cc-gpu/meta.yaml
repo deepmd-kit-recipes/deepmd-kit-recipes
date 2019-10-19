@@ -1,0 +1,61 @@
+{% set version = "1.14.0" %}
+
+# This is the recipe for the "gpu" variant of tensorflow-base
+package:
+  name: libtensorflow_cc
+  version: {{ version }}
+
+source:
+  fn: tensorflow-{{ version }}.tar.gz
+  url: https://github.com/tensorflow/tensorflow/archive/v{{ version }}.tar.gz
+  sha256: aa2a6a1daafa3af66807cfe0bc77bfe1144a9a53df9a96bab52e3e575b3047ed
+  patches:
+    - 0008-do-not-include-B-usr-bin-flag.patch  # [linux]
+    - 0009-patch-nccl-for-older-kernels.patch  # [linux]
+    - 33106.diff
+
+build:
+  number: 0
+  string: gpu_h{{PKG_HASH}}_{{ PKG_BUILDNUM }}
+  skip: True  # [not x86_64]
+  skip: True  # [win and vc<14]
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - bazel
+    - git
+  host:
+    - cudatoolkit {{ cudatoolkit }}*
+    - cudnn {{ cudnn }}*
+    - cupti  # [not win]
+  run:
+    - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
+    - {{ pin_compatible('cudnn') }}
+    - cupti  # [not win]
+
+test:
+  files:
+    - test_cc.cc
+  requires:
+    - {{ compiler('cxx') }}
+  commands:
+    - test -f $PREFIX/lib/libtensorflow_cc.so  # [not win]
+    - $CXX -std=c++11 -o test_cc -L${PREFIX}/lib/ -ltensorflow_cc -ltensorflow_framework -lrt -I${PREFIX}/include/ test_cc.cc && ./test_cc  # [not win]
+
+about:
+  home: http://tensorflow.org/
+  license: Apache 2.0
+  license_family: Apache
+  summary: TensorFlow is a machine learning library, base GPU package, tensorflow only.
+  description: |
+    TensorFlow provides multiple APIs.The lowest level API, TensorFlow Core
+    provides you with complete programming control.
+    Base GPU package contains only tensorflow, not tensorflow-tensorboard.
+  dev_url: https://github.com/tensorflow/tensorflow
+  doc_url: https://www.tensorflow.org/get_started/get_started
+  doc_source_url: https://github.com/tensorflow/tensorflow/tree/master/tensorflow/docs_src
+
+extra:
+  tflow_variant: {{ tflow_variant }}
