@@ -10,8 +10,7 @@ sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_confi
 
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS=""
-export TF_NEED_MKL=1
-export BAZEL_MKL_OPT="--config=mkl"
+export TF_NEED_MKL=0
 export BUILD_OPTS="
     --copt=-march=nocona
     --copt=-mtune=haswell
@@ -24,7 +23,6 @@ export BUILD_OPTS="
     --linkopt=-zrelro
     --linkopt=-znow
     --verbose_failures
-    ${BAZEL_MKL_OPT}
     --config=opt"
 export TF_ENABLE_XLA=1
 

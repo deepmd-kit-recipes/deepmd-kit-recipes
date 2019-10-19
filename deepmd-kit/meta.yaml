@@ -12,6 +12,7 @@ source:
 
 build:
   number: 0
+  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}"
   script: "SETUPTOOLS_SCM_PRETEND_VERSION={{ version }} {{ PYTHON }} -m pip install . --no-deps -vv"
 
 requirements:
@@ -37,8 +38,8 @@ requirements:
     - python >=3.6
     - numpy
     - scipy
-    - tensorflow  # [dp_variant != 'gpu']
-    - tensorflow-gpu  # [dp_variant == 'gpu']
+    - {{ pin_compatible('tensorflow', max_pin='x.x') }}  # [dp_variant != 'gpu']
+    - {{ pin_compatible('tensorflow-gpu', max_pin='x.x') }}  # [dp_variant == 'gpu']
 
 test:
   imports:

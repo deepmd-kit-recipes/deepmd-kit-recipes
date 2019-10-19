@@ -12,6 +12,7 @@ source:
 
 build:
   number: 0
+  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}"
   run_exports:
     - {{ pin_compatible('libdeepmd', max_pin='x.x') }}
 
@@ -23,7 +24,7 @@ requirements:
   host:
     - cudatoolkit {{ cudatoolkit }}*  # [dp_variant == 'gpu']
     - cudnn {{ cudnn }}*  # [dp_variant == 'gpu']
-    - libtensorflow_cc =={{ gpu_tf }}  # [dp_variant == 'gpu']
+    - libtensorflow_cc {{ tf }}*
   run:
     - {{ pin_compatible('libtensorflow_cc', max_pin='x.x') }}
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}  # [dp_variant == 'gpu']
