@@ -8,11 +8,13 @@ package:
 
 source:
   url: https://github.com/lammps/lammps/archive/{{ lammps }}.tar.gz
+  sha256: 5380c1689a93d7922e3d65d9c186401d429878bb3cbe9a692580d3470d6a253f
   patches: 
     - deepmd.patch
     
 build:
   number: 0
+  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}"
   skip: True  # [win]
 
 requirements:
@@ -23,7 +25,7 @@ requirements:
     - make 
   
   host:
-    - libdeepmd =={{ gpu_dp }}  # [dp_variant == 'gpu']
+    - libdeepmd {{ version }} *{{ dp_variant }}
     - mpich
     - zlib
     - fftw

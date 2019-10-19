@@ -1,4 +1,3 @@
 dp_variant:
 - gpu
-gpu_dp:
-- "1.0.1 hf468714_0"
+- cpu
