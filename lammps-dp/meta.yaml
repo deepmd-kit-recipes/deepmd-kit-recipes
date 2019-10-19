@@ -33,6 +33,7 @@ requirements:
     - jpeg
 
   run:
+    - libdeepmd {{ version }} *{{ dp_variant }}
     - {{ pin_compatible('mpich') }}
     - fftw
     - libpng
