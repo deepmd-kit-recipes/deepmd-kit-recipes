@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - run: conda install conda-build
     - run: conda build deepmd-kit -c njzjz
     - run: conda build libdeepmd -c deepmodeling
     - run: conda build lammps-dp --use-local -c deepmodeling
