@@ -1,3 +1,17 @@
 dp_variant:
 - cpu
 - gpu
+tf:
+- "1.14.0 cpu"
+- "1.14.0 gpu"
+tensorflow:
+- 1.14
+libprotobuf:
+- 3.7.1
+cudatoolkit:
+- 10.0
+cudnn:
+- 7.6
+zip_keys:
+- dp_variant
+- tf

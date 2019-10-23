@@ -1,5 +1,5 @@
 {% set name = "deepmd-kit" %}
-{% set version = "1.0.1" %}
+{% set version = "0.12.8" %}
 
 
 package:
@@ -8,12 +8,13 @@ package:
 
 source:
   url: https://github.com/deepmodeling/deepmd-kit/archive/v{{ version }}.tar.gz
-  sha256: 95902bb737630e73fc20ea59f4d32fc063b7e00736f23e162a7015922914cec1
+  sha256: b54547b1aab40a792fb99341079306152132669934af2ee70131b1690d290e0b
+  patches:
+    - cxxflags.patch
 
 build:
   number: 0
   string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}"
-  script: "SETUPTOOLS_SCM_PRETEND_VERSION={{ version }} {{ PYTHON }} -m pip install . --no-deps -vv"
 
 requirements:
   build:
@@ -21,31 +22,28 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake  >=3.7
     - make  # [unix]
-    - ninja
 
   host:
-    - python >=3.6
-    - pip
-    - numpy >=1.13.3,<2.0a0
-    - setuptools_scm
-    - tensorflow  # [dp_variant != 'gpu']
-    - tensorflow-gpu  # [dp_variant == 'gpu']
-    - setuptools_scm
-    - scikit-build
-    - m2r
+    - libtensorflow_cc {{ tf }}*
+    - cudatoolkit {{ cudatoolkit }}*  # [dp_variant == 'gpu']
+    - cudnn {{ cudnn }}*  # [dp_variant == 'gpu']
 
   run:
     - python >=3.6
-    - numpy
+    - numpy >=1.13.3,<2.0a0
     - scipy
-    - {{ pin_compatible('tensorflow', max_pin='x.x') }}  # [dp_variant != 'gpu']
-    - {{ pin_compatible('tensorflow-gpu', max_pin='x.x') }}  # [dp_variant == 'gpu']
+    - libtensorflow_cc {{ tf }}*
+    - libprotobuf {{ libprotobuf }}*
+    - tensorflow {{ tensorflow }}*  # [dp_variant != 'gpu']
+    - tensorflow-gpu {{ tensorflow }}*  # [dp_variant == 'gpu']
+    - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}  # [dp_variant == 'gpu']
+    - {{ pin_compatible('cudnn') }}  # [dp_variant == 'gpu']
 
 test:
-  imports:
-    - deepmd
   commands:
-    - dp -h
+    - dp_train -h
+    - dp_test -h
+    - dp_frz -h
 
 about:
   home: https://github.com/deepmodeling/deepmd-kit

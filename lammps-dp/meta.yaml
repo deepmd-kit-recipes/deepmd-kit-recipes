@@ -1,5 +1,5 @@
 {% set name = "lammps-dp" %}
-{% set version = "1.0.1" %}
+{% set version = "0.12.8" %}
 {% set lammps = "stable_7Aug2019" %}
 
 package:
@@ -14,7 +14,7 @@ source:
     
 build:
   number: 0
-  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}"
+  string: "{{ PKG_BUILDNUM }}_{{ deepmd_variant }}"
   skip: True  # [win]
 
 requirements:
@@ -25,7 +25,7 @@ requirements:
     - make 
   
   host:
-    - libdeepmd {{ version }} *{{ dp_variant }}
+    - deepmd-kit {{ version }} *{{ deepmd_variant }}
     - mpich
     - zlib
     - fftw
@@ -33,7 +33,7 @@ requirements:
     - jpeg
 
   run:
-    - libdeepmd {{ version }} *{{ dp_variant }}
+    - deepmd-kit {{ version }} *{{ deepmd_variant }}
     - {{ pin_compatible('mpich') }}
     - fftw
     - libpng
