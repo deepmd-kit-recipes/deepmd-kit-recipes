@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index 2f56794..c62ce76 100644
+--- a/setup.py
++++ b/setup.py
+@@ -55,7 +55,7 @@ setup(
+     cmake_args=['-DTENSORFLOW_ROOT:STRING=%s' % tf_install_dir, 
+                 '-DBUILD_PY_IF:BOOL=TRUE', 
+                 '-DBUILD_CPP_IF:BOOL=FALSE',
+-                '-DFLOAT_PREC:STRING=high',
++                '-DFLOAT_PREC:STRING=low',
+     ],
+     cmake_source_dir='source',
+     cmake_minimum_required_version='3.0',

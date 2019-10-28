@@ -1,0 +1,13 @@
+diff --git a/source/lmp/pair_nnp.cpp b/source/lmp/pair_nnp.cpp
+index 555b653..60b28c7 100644
+--- a/source/lmp/pair_nnp.cpp
++++ b/source/lmp/pair_nnp.cpp
+@@ -699,7 +699,7 @@ void PairNNP::settings(int narg, char **arg)
+ #ifdef HIGH_PREC
+       eps = atof(arg[iarg+1]);
+ #else
+-      eps = strtof(arg[iarg+1]);
++      eps = strtof(arg[iarg+1], NULL);
+ #endif
+       iarg += 2;
+     }

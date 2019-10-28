@@ -11,3 +11,6 @@ cudnn:
 zip_keys:
 - dp_variant
 - tf
+float_prec:
+- low
+- high

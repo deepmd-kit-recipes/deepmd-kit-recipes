@@ -1,3 +1,6 @@
 dp_variant:
 - cpu
 - gpu
+float_prec:
+- low
+- high

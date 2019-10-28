@@ -9,10 +9,13 @@ package:
 source:
   url: https://github.com/deepmodeling/deepmd-kit/archive/v{{ version }}.tar.gz
   sha256: 95902bb737630e73fc20ea59f4d32fc063b7e00736f23e162a7015922914cec1
+  patches:
+  - low_prec.diff  # [float_prec == 'low']
 
 build:
   number: 0
-  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}"
+  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}"  # [float_prec == 'high']
+  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}_{{float_prec}}"  # [float_prec != 'high']
   script: "SETUPTOOLS_SCM_PRETEND_VERSION={{ version }} {{ PYTHON }} -m pip install . --no-deps -vv"
 
 requirements:

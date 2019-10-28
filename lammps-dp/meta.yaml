@@ -14,7 +14,8 @@ source:
     
 build:
   number: 0
-  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}"
+  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}"  # [float_prec == 'high']
+  string: "{{ PKG_BUILDNUM }}_{{ dp_variant }}_{{float_prec}}"  # [float_prec != 'high']
   skip: True  # [win]
 
 requirements:
@@ -25,7 +26,8 @@ requirements:
     - make 
   
   host:
-    - libdeepmd {{ version }} *{{ dp_variant }}
+    - libdeepmd {{ version }} *{{ dp_variant }}  # [float_prec == 'high']
+    - libdeepmd {{ version }} *{{ dp_variant }}_{{ float_prec }}  # [float_prec != 'high'] 
     - mpich
     - zlib
     - fftw
@@ -33,7 +35,8 @@ requirements:
     - jpeg
 
   run:
-    - libdeepmd {{ version }} *{{ dp_variant }}
+    - libdeepmd {{ version }} *{{ dp_variant }}  # [float_prec == 'high']
+    - libdeepmd {{ version }} *{{ dp_variant }}_{{ float_prec }}  # [float_prec != 'high'] 
     - {{ pin_compatible('mpich') }}
     - fftw
     - libpng
@@ -43,9 +46,11 @@ test:
   files:
     - input.lammps
     - water.lmp
-    - frozen_model.pb
+    - frozen_model.pb  # [float_prec == 'high']
+    - frozen_model_low.pb  # [float_prec == 'low']
   commands: 
     - lmp -help
+    - mv frozen_model_low.pb frozen_model.pb  # [float_prec == 'low']
     - lmp -in input.lammps
 
 about:
