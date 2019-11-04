@@ -1,13 +1,13 @@
 name: deepmd-kit
-version: 1.0.1-gpu
+version: 1.1.0-gpu
 
 channels:
 - https://conda.anaconda.org/deepmodeling
 - https://repo.anaconda.com/pkgs/main/
 
 specs:
-- deepmd-kit 1.0.1 *gpu
-- lammps-dp 1.0.1 *gpu
+- deepmd-kit 1.1.0 *gpu
+- lammps-dp 1.1.0 *gpu
 
 ignore_duplicate_files: True
 

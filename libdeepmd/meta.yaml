@@ -1,16 +1,15 @@
 {% set name = "libdeepmd" %}
-{% set version = "1.0.1" %}
+{% set version = "1.1.0" %}
 
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
-source:
-  url: https://github.com/deepmodeling/deepmd-kit/archive/v{{ version }}.tar.gz
-  sha256: 95902bb737630e73fc20ea59f4d32fc063b7e00736f23e162a7015922914cec1
-  patches:
-    - 109.diff
+source: 
+  git_url: https://github.com/deepmodeling/deepmd-kit
+  git_rev: d73522337fe286ff95a484d8e41f89090747f54d
+  git_depth: 1
 
 build:
   number: 0
@@ -25,6 +24,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
+    - git
   host:
     - cudatoolkit {{ cudatoolkit }}*  # [dp_variant == 'gpu']
     - cudnn {{ cudnn }}*  # [dp_variant == 'gpu']

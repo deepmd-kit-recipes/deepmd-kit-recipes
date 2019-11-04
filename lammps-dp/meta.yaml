@@ -1,5 +1,5 @@
 {% set name = "lammps-dp" %}
-{% set version = "1.0.1" %}
+{% set version = "1.1.0" %}
 {% set lammps = "stable_7Aug2019" %}
 
 package:
@@ -46,12 +46,12 @@ test:
   files:
     - input.lammps
     - water.lmp
-    - frozen_model.pb  # [float_prec == 'high']
-    - frozen_model_low.pb  # [float_prec == 'low']
+    #- frozen_model.pb  # [float_prec == 'high']
+    #- frozen_model_low.pb  # [float_prec == 'low']
   commands: 
     - lmp -help
-    - mv frozen_model_low.pb frozen_model.pb  # [float_prec == 'low']
-    - lmp -in input.lammps
+    #- mv frozen_model_low.pb frozen_model.pb  # [float_prec == 'low']
+    #- lmp -in input.lammps
 
 about:
   home: http://lammps.sandia.gov
