@@ -1,10 +1,7 @@
 set -e
 mkdir -p source/build
 cd source/build
-if [ ${dp_variant} == "gpu" ]; then
-    export CMAKE_CUDA_ARG="-DUSE_CUDA_TOOLKIT=true"
-fi
-cmake -DTENSORFLOW_ROOT=${PREFIX} -DCMAKE_INSTALL_PREFIX=${PREFIX} ${CMAKE_CUDA_ARG} -DFLOAT_PREC=${float_prec} ..
+cmake -DTENSORFLOW_ROOT=${PREFIX} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DFLOAT_PREC=${float_prec} ..
 make -j${CPU_COUNT}
 make install
 make lammps
