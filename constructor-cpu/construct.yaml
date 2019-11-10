@@ -1,13 +1,13 @@
 name: deepmd-kit
-version: 1.1.0-cpu
+version: 1.1.1-cpu
 
 channels:
 - https://conda.anaconda.org/deepmodeling
 - https://repo.anaconda.com/pkgs/main/
 
 specs:
-- deepmd-kit 1.1.0 *cpu
-- lammps-dp 1.1.0 *cpu
+- deepmd-kit 1.1.1 *cpu
+- lammps-dp 1.1.1 *cpu
 
 ignore_duplicate_files: True
 

@@ -1,5 +1,5 @@
 {% set name = "lammps-dp" %}
-{% set version = "1.1.0" %}
+{% set version = "1.1.1" %}
 {% set lammps = "stable_7Aug2019" %}
 
 package:

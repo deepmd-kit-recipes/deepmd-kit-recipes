@@ -1,5 +1,5 @@
 {% set name = "deepmd-kit" %}
-{% set version = "1.1.0" %}
+{% set version = "1.1.1" %}
 
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   git_url: https://github.com/deepmodeling/deepmd-kit
-  git_rev: d73522337fe286ff95a484d8e41f89090747f54d
+  git_rev: 86a5163cb9a17375ce1d2f32c8eb47d1ca6075e8
   git_depth: 1
   patches:
   - low_prec.diff  # [float_prec == 'low']
