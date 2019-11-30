@@ -7,6 +7,9 @@ set -vex
 
 # expand PREFIX in BUILD file
 sed -i -e "s:\${PREFIX}:${PREFIX}:" tensorflow/core/platform/default/build_config/BUILD
+# TF added a patch in 2.0 release: https://github.com/tensorflow/tensorflow/blob/9621ac4de0864be4e44a298edef6a9c3637849a3/third_party/nccl/archive.patch
+#    We extend that to add on our NCCL socket patch for older kernels
+cp $RECIPE_DIR/nccl_archive.patch third_party/nccl/archive.patch
 
 mkdir -p ./bazel_output_base
 export BAZEL_OPTS=""
@@ -84,7 +87,7 @@ bazel ${BAZEL_OPTS} build \
 mkdir -p $PREFIX/lib
 cp -d bazel-bin/tensorflow/libtensorflow_cc.so* $PREFIX/lib/
 cp -d bazel-bin/tensorflow/libtensorflow_framework.so* $PREFIX/lib/
-cp -d $PREFIX/lib/libtensorflow_framework.so.1 $PREFIX/lib/libtensorflow_framework.so
+cp -d $PREFIX/lib/libtensorflow_framework.so.2 $PREFIX/lib/libtensorflow_framework.so
 mkdir -p $PREFIX/include
 mkdir -p $PREFIX/include/tensorflow
 # copy headers
@@ -94,5 +97,5 @@ rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' tenso
 rsync -avzh --include '*/' --include '*' --exclude '*.cc' third_party/ $PREFIX/include/third_party/
 rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-work/external/eigen_archive/Eigen/ $PREFIX/include/Eigen/
 rsync -avzh --include '*/' --include '*' --exclude '*.txt' bazel-work/external/eigen_archive/unsupported/ $PREFIX/include/unsupported/
-rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-work/external/protobuf_archive/src/google/ $PREFIX/include/google/
+rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-work/external/com_google_protobuf/src/google/ $PREFIX/include/google/
 rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-work/external/com_google_absl/absl/ $PREFIX/include/absl/

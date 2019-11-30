@@ -1,20 +1,19 @@
-From 13579bb562f3e059fd28e6dd327750814fa62e82 Mon Sep 17 00:00:00 2001
-From: Jonathan Helmus <jjhelmus@gmail.com>
-Date: Mon, 12 Nov 2018 23:01:30 -0600
-Subject: [PATCH 08/10] do not include -B/usr/bin/ flag
+From c05b45d2f785b72292239efb7d16b7d31518dfdb Mon Sep 17 00:00:00 2001
+From: Mike Sarahan <msarahan@gmail.com>
+Date: Fri, 18 Oct 2019 16:18:49 -0500
+Subject: [PATCH] do not include -B/usr/bin/ flag
 
 ---
- third_party/gpus/cuda_configure.bzl                           | 11 ++++++-----
- third_party/sycl/crosstool/CROSSTOOL.tpl                      |  4 +---
- third_party/toolchains/cpus/arm/CROSSTOOL.tpl                 |  2 --
- .../toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL       |  2 --
- 4 files changed, 7 insertions(+), 12 deletions(-)
+ third_party/gpus/cuda_configure.bzl           | 10 ++++++----
+ third_party/sycl/crosstool/CROSSTOOL.tpl      |  4 +---
+ third_party/toolchains/cpus/arm/CROSSTOOL.tpl |  2 --
+ 3 files changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/third_party/gpus/cuda_configure.bzl b/third_party/gpus/cuda_configure.bzl
-index f250ecd..4d24000 100644
+index cf63adcb..f80dc0a5 100644
 --- a/third_party/gpus/cuda_configure.bzl
 +++ b/third_party/gpus/cuda_configure.bzl
-@@ -1118,11 +1118,12 @@ def _create_local_cuda_repository(repository_ctx):
+@@ -1118,10 +1118,12 @@ def _create_local_cuda_repository(repository_ctx):
      # TODO: when bazel stops adding '-B/usr/bin' by default, remove this
      #       flag from the CROSSTOOL completely (see
      #       https://github.com/bazelbuild/bazel/issues/5634)
@@ -22,18 +21,17 @@ index f250ecd..4d24000 100644
 -        cuda_defines["%{linker_bin_path}"] = ""
 -    else:
 -        cuda_defines["%{linker_bin_path}"] = host_compiler_prefix
--
-+    #if should_download_clang:
-+    #    cuda_defines["%{linker_bin_path}"] = ""
-+    #else:
-+    #    cuda_defines["%{linker_bin_path}"] = host_compiler_prefix
++    # if should_download_clang:
++    #     cuda_defines["%{linker_bin_path}"] = ""
++    # else:
++    #     cuda_defines["%{linker_bin_path}"] = host_compiler_prefix
 +    # Never add -B/usr/bin
 +    cuda_defines["%{linker_bin_path}"] = ""
+ 
      cuda_defines["%{extra_no_canonical_prefixes_flags}"] = ""
      cuda_defines["%{unfiltered_compile_flags}"] = ""
-     if is_cuda_clang:
 diff --git a/third_party/sycl/crosstool/CROSSTOOL.tpl b/third_party/sycl/crosstool/CROSSTOOL.tpl
-index f8e50ef..304b98a 100755
+index f8e50efc..304b98aa 100755
 --- a/third_party/sycl/crosstool/CROSSTOOL.tpl
 +++ b/third_party/sycl/crosstool/CROSSTOOL.tpl
 @@ -41,7 +41,6 @@ toolchain {
@@ -60,10 +58,10 @@ index f8e50ef..304b98a 100755
 \ No newline at end of file
 +}
 diff --git a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
-index 8d51e9b..64c9863 100644
+index d98fcc84..8fbd3a5b 100644
 --- a/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
 +++ b/third_party/toolchains/cpus/arm/CROSSTOOL.tpl
-@@ -148,7 +148,6 @@ toolchain {
+@@ -155,7 +155,6 @@ toolchain {
    tool_path { name: "gcc" path: "/usr/bin/gcc" }
    cxx_flag: "-std=c++0x"
    linker_flag: "-lstdc++"
@@ -71,7 +69,7 @@ index 8d51e9b..64c9863 100644
  
    # TODO(bazel-team): In theory, the path here ought to exactly match the path
    # used by gcc. That works because bazel currently doesn't track files at
-@@ -366,7 +365,6 @@ toolchain {
+@@ -373,7 +372,6 @@ toolchain {
    tool_path { name: "gcc" path: "/usr/bin/clang" }
    cxx_flag: "-std=c++0x"
    linker_flag: "-lstdc++"
@@ -79,26 +77,6 @@ index 8d51e9b..64c9863 100644
  
    # TODO(bazel-team): In theory, the path here ought to exactly match the path
    # used by gcc. That works because bazel currently doesn't track files at
-diff --git a/third_party/toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL b/third_party/toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL
-index a14ecea..8f0cf26 100755
---- a/third_party/toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL
-+++ b/third_party/toolchains/preconfig/ubuntu14.04/gcc-nvcc/CROSSTOOL
-@@ -208,7 +208,6 @@ toolchain {
-       action: "c++-link-dynamic-library"
-       action: "c++-link-nodeps-dynamic-library"
-       flag_group {
--        flag: "-B/usr/bin"
-       }
-     }
-   }
-@@ -447,7 +446,6 @@ toolchain {
-       action: "c++-link-dynamic-library"
-       action: "c++-link-nodeps-dynamic-library"
-       flag_group {
--        flag: "-B/usr/bin"
-       }
-     }
-   }
 -- 
-2.7.4
+2.20.1
 
