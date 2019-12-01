@@ -91,7 +91,7 @@ cp -d $PREFIX/lib/libtensorflow_framework.so.2 $PREFIX/lib/libtensorflow_framewo
 mkdir -p $PREFIX/include
 mkdir -p $PREFIX/include/tensorflow
 # copy headers
-rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-genfiles/ $PREFIX/include/
+rsync -avzh --exclude '_virtual_includes/' --include '*/' --include '*.h' --include '*.inc' --exclude '*' bazel-genfiles/ $PREFIX/include/
 rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' tensorflow/cc $PREFIX/include/tensorflow/
 rsync -avzh --include '*/' --include '*.h' --include '*.inc' --exclude '*' tensorflow/core $PREFIX/include/tensorflow/
 rsync -avzh --include '*/' --include '*' --exclude '*.cc' third_party/ $PREFIX/include/third_party/
